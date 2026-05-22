@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eli's Unb10cked Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050a14;
+      --panel-bg: #080f1f;
+      --border: #1a2e52;
+      --accent: #00d4ff;
+      --accent2: #7b2fff;
+      --accent3: #ff2d78;
+      --text: #c8d8f0;
+      --glow: 0 0 18px rgba(0,212,255,0.45);
+      --glow2: 0 0 18px rgba(123,47,255,0.45);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas Particles ── */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 38px 20px 22px;
+    }
+
+    .logo-wrap {
+      display: inline-block;
+      position: relative;
+    }
+
+    .logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -6px -14px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent), var(--accent3));
+      border-radius: 8px;
+      filter: blur(18px);
+      opacity: 0.35;
+      z-index: -1;
+      animation: hueShift 6s linear infinite;
+    }
+
+    @keyframes hueShift {
+      0%   { filter: blur(18px) hue-rotate(0deg);   }
+      100% { filter: blur(18px) hue-rotate(360deg); }
+    }
+
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      letter-spacing: 0.12em;
+      background: linear-gradient(90deg, var(--accent2) 0%, var(--accent) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      animation: titlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes titlePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.82; }
+    }
+
+    .tagline {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(200,216,240,0.45);
+      font-weight: 300;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      position: relative;
+      z-index: 10;
+      margin: 0 auto 28px;
+      width: 80%;
+      max-width: 900px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), var(--accent3), transparent);
+      opacity: 0.6;
+    }
+
+    /* ── Panels Grid ── */
+    .grid {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+      padding: 0 28px 48px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-bg);
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      animation: panelIn 0.7s ease both;
+    }
+
+    .panel:nth-child(1) { animation-delay: 0.1s; --panel-accent: var(--accent); }
+    .panel:nth-child(2) { animation-delay: 0.25s; --panel-accent: var(--accent2); }
+    .panel:nth-child(3) { animation-delay: 0.4s;  --panel-accent: var(--accent3); }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel:hover {
+      transform: translateY(-5px);
+      border-color: var(--panel-accent);
+      box-shadow: 0 8px 44px rgba(0,0,0,0.6), 0 0 20px rgba(0,212,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    /* ── Panel Header Bar ── */
+    .panel-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+      user-select: none;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .panel:nth-child(1) .dot:nth-child(1) { background: #ff5f56; }
+    .panel:nth-child(1) .dot:nth-child(2) { background: #ffbd2e; }
+    .panel:nth-child(1) .dot:nth-child(3) { background: #27c93f; }
+    .panel:nth-child(2) .dot:nth-child(1) { background: #ff5f56; }
+    .panel:nth-child(2) .dot:nth-child(2) { background: #ffbd2e; }
+    .panel:nth-child(2) .dot:nth-child(3) { background: #27c93f; }
+    .panel:nth-child(3) .dot:nth-child(1) { background: #ff5f56; }
+    .panel:nth-child(3) .dot:nth-child(2) { background: #ffbd2e; }
+    .panel:nth-child(3) .dot:nth-child(3) { background: #27c93f; }
+
+    .panel-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--panel-accent);
+      flex: 1;
+      text-align: center;
+      padding-right: 33px; /* balance the dots */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Iframe Wrapper ── */
+    .iframe-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 62.5%; /* 16:10 aspect */
+      flex: 1;
+    }
+
+    .iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #0a0f1a;
+    }
+
+    /* ── Placeholder Panel ── */
+    .placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #0a0f1e, #0d1428);
+    }
+
+    .placeholder-icon {
+      width: 60px;
+      height: 60px;
+      border: 2px dashed var(--accent3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .placeholder-icon svg {
+      animation: spin 8s linear infinite reverse;
+    }
+
+    .placeholder p {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--accent3);
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    .placeholder span {
+      font-size: 0.75rem;
+      color: rgba(200,216,240,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Panel Footer ── */
+    .panel-footer {
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(200,216,240,0.45);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #27c93f;
+      box-shadow: 0 0 6px #27c93f;
+      animation: blink 2.2s ease-in-out infinite;
+    }
+
+    .status-dot.offline {
+      background: var(--accent3);
+      box-shadow: 0 0 6px var(--accent3);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    .open-btn {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--panel-accent);
+      color: var(--panel-accent);
+      background: transparent;
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .open-btn:hover {
+      background: var(--panel-accent);
+      color: #000;
+    }
+
+    .open-btn.disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 20px 28px;
+      font-size: 0.72rem;
+      color: rgba(200,216,240,0.22);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<header>
+  <div class="logo-wrap">
+    <h1>Eli's Unb10cked Hub</h1>
+  </div>
+  <p class="tagline">Your gateway &nbsp;·&nbsp; Three panels &nbsp;·&nbsp; Zero limits</p>
+</header>
+
+<div class="divider"></div>
+
+<div class="grid">
+
+  <!-- Panel 1 -->
+  <div class="panel">
+    <div class="panel-bar">
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <span class="panel-title">Eli's Unb10cked</span>
+    </div>
+    <div class="iframe-wrap">
+      <iframe src="https://elisunb10cked.rinet.ai/index.html" title="Eli's Unb10cked" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+    <div class="panel-footer">
+      <span class="status"><span class="status-dot"></span>Live</span>
+      <a class="open-btn" href="https://elisunb10cked.rinet.ai/index.html" target="_blank">Open ↗</a>
+    </div>
+  </div>
+
+  <!-- Panel 2 -->
+  <div class="panel">
+    <div class="panel-bar">
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <span class="panel-title">Eli's Proxies</span>
+    </div>
+    <div class="iframe-wrap">
+      <iframe src="http://elisproxiesispeak.rinet.ai/" title="Eli's Proxies" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+    <div class="panel-footer">
+      <span class="status"><span class="status-dot"></span>Live</span>
+      <a class="open-btn" href="http://elisproxiesispeak.rinet.ai/" target="_blank">Open ↗</a>
+    </div>
+  </div>
+
+  <!-- Panel 3 — Placeholder -->
+  <div class="panel">
+    <div class="panel-bar">
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <span class="panel-title">Coming Soon</span>
+    </div>
+    <div class="iframe-wrap">
+      <!-- Replace YOUR_LINK_HERE with the actual URL when ready -->
+      <!-- <iframe src="YOUR_LINK_HERE" title="Panel 3"></iframe> -->
+      <div class="placeholder">
+        <div class="placeholder-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <p>Panel 3</p>
+        <span>Link goes here — edit the HTML</span>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <span class="status"><span class="status-dot offline"></span>Pending</span>
+      <a class="open-btn disabled" href="#">Open ↗</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>Eli's Unb10cked Hub &nbsp;·&nbsp; All panels load independently</footer>
+
+<script>
+  // ── Floating Particles ──
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  const COLORS = ['#00d4ff','#7b2fff','#ff2d78','#00ffcc','#a78bfa'];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  function spawnParticle() {
+    return {
+      x: rand(0, W),
+      y: rand(0, H),
+      r: rand(1, 3.2),
+      vx: rand(-0.35, 0.35),
+      vy: rand(-0.55, -0.1),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: rand(0.15, 0.7),
+      life: rand(80, 220),
+      age: 0
+    };
+  }
+
+  for (let i = 0; i < 120; i++) particles.push(spawnParticle());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.age++;
+
+      const fade = 1 - p.age / p.life;
+      ctx.save();
+      ctx.globalAlpha = p.alpha * fade;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = p.color;
+      ctx.fill();
+      ctx.restore();
+
+      if (p.age >= p.life || p.y < -10) {
+        particles[i] = spawnParticle();
+        particles[i].y = H + 5;
+      }
+    }
+
+    // occasional connecting lines between nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 90) {
+          ctx.save();
+          ctx.globalAlpha = 0.07 * (1 - dist / 90);
+          ctx.strokeStyle = particles[i].color;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+</body>
+</html>
