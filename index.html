@@ -29,7 +29,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Particles ── */
     #particle-canvas {
       position: fixed;
       inset: 0;
@@ -37,7 +36,6 @@
       z-index: 0;
     }
 
-    /* ── Header ── */
     header {
       position: relative;
       z-index: 10;
@@ -92,7 +90,6 @@
       font-weight: 300;
     }
 
-    /* ── Divider ── */
     .divider {
       position: relative;
       z-index: 10;
@@ -104,20 +101,18 @@
       opacity: 0.55;
     }
 
-    /* ── Cards Grid ── */
     .grid {
       position: relative;
       z-index: 10;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 360px));
       gap: 26px;
-      padding: 0 32px 64px;
+      padding: 0 32px 48px;
       justify-content: center;
       width: 100%;
       max-width: 1200px;
     }
 
-    /* ── Card ── */
     .card {
       --ca: var(--accent);
       display: flex;
@@ -150,7 +145,6 @@
       to   { opacity: 1; transform: translateY(0)   scale(1); }
     }
 
-    /* glow orb behind icon */
     .card::before {
       content: '';
       position: absolute;
@@ -172,10 +166,8 @@
     }
 
     .card:hover::before { opacity: 0.18; }
-
     .card:active { transform: translateY(-3px) scale(0.99); }
 
-    /* ── Icon circle ── */
     .card-icon {
       width: 72px;
       height: 72px;
@@ -196,8 +188,6 @@
     }
 
     .card-icon svg { display: block; }
-
-    /* ── Text ── */
     .card-body { text-align: center; }
 
     .card-name {
@@ -217,7 +207,6 @@
       line-height: 1.55;
     }
 
-    /* ── Launch pill ── */
     .card-launch {
       display: inline-flex;
       align-items: center;
@@ -244,14 +233,12 @@
     .card-launch svg { transition: transform 0.2s; }
     .card:hover .card-launch svg { transform: translate(2px, -2px); }
 
-    /* Disabled card (placeholder) */
     .card.disabled {
       cursor: default;
       pointer-events: none;
       opacity: 0.55;
     }
 
-    /* ── Status badge ── */
     .badge {
       position: absolute;
       top: 14px;
@@ -284,7 +271,286 @@
       50%       { opacity: 0.3; }
     }
 
-    /* ── Footer ── */
+    /* ── Action Buttons Row ── */
+    .action-row {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 32px 56px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 28px;
+      border-radius: 40px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s ease, background 0.2s;
+      border: none;
+      outline: none;
+    }
+
+    .action-btn:hover { transform: translateY(-3px) scale(1.04); }
+    .action-btn:active { transform: scale(0.97); }
+
+    .btn-ai {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff;
+      box-shadow: 0 0 22px rgba(0,212,255,0.25), 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .btn-ai:hover {
+      box-shadow: 0 0 36px rgba(0,212,255,0.45), 0 8px 28px rgba(0,0,0,0.5);
+    }
+
+    .btn-privacy {
+      background: transparent;
+      color: rgba(200,216,240,0.55);
+      border: 1px solid rgba(200,216,240,0.18);
+      box-shadow: none;
+    }
+
+    .btn-privacy:hover {
+      color: var(--text);
+      border-color: rgba(200,216,240,0.4);
+      background: rgba(200,216,240,0.04);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ── AI Chat Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #080f1f;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,212,255,0.08);
+      animation: modalIn 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.93) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .modal-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .modal-title-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: 1px solid var(--border);
+      color: rgba(200,216,240,0.4);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .modal-close:hover { color: var(--text); border-color: rgba(200,216,240,0.4); }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 220px;
+      max-height: 360px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .msg {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+
+    .msg-ai {
+      align-self: flex-start;
+      background: #0d1a30;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-typing {
+      align-self: flex-start;
+      background: #0d1a30;
+      border: 1px solid var(--border);
+      padding: 12px 18px;
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: bounce 1.2s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; background: var(--accent2); }
+    .dot:nth-child(3) { animation-delay: 0.4s; background: var(--accent3); }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%            { transform: translateY(-6px); }
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: #0d1a30;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 10px 18px;
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input::placeholder { color: rgba(200,216,240,0.25); }
+    .chat-input:focus { border-color: var(--accent); }
+
+    .chat-send {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .chat-send:hover { transform: scale(1.08); box-shadow: 0 0 16px rgba(0,212,255,0.4); }
+    .chat-send:active { transform: scale(0.95); }
+
+    /* ── Privacy Policy Modal ── */
+    .privacy-modal {
+      background: #080f1f;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+      animation: modalIn 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .privacy-body {
+      overflow-y: auto;
+      padding: 24px;
+      flex: 1;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .privacy-body h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 20px 0 8px;
+    }
+
+    .privacy-body h2:first-child { margin-top: 0; }
+
+    .privacy-body p {
+      font-size: 0.88rem;
+      color: rgba(200,216,240,0.6);
+      line-height: 1.65;
+      letter-spacing: 0.03em;
+    }
+
     footer {
       position: relative;
       z-index: 10;
@@ -350,7 +616,7 @@
     </span>
   </a>
 
-  <!-- Card 3 — Placeholder: replace YOUR_LINK_HERE with actual URL -->
+  <!-- Card 3 — Placeholder -->
   <a class="card disabled" href="YOUR_LINK_HERE" target="_blank" rel="noopener">
     <span class="badge"><span class="badge-dot soon"></span>Soon</span>
     <div class="card-icon">
@@ -371,9 +637,103 @@
 
 </div>
 
+<!-- Action Buttons -->
+<div class="action-row">
+
+  <button class="action-btn btn-ai" onclick="openChat()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a8 8 0 0 1 8 8c0 5.25-8 13-8 13S4 15.25 4 10a8 8 0 0 1 8-8z"/>
+      <circle cx="12" cy="10" r="2.5"/>
+    </svg>
+    AI Chat
+  </button>
+
+  <button class="action-btn btn-privacy" onclick="openPrivacy()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    Privacy Policy
+  </button>
+
+</div>
+
+<!-- AI Chat Modal -->
+<div class="modal-overlay" id="chatModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-title-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        Eli's AI
+      </div>
+      <button class="modal-close" onclick="closeChat()">✕</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg msg-ai">Hey! I'm Eli's AI assistant. Ask me anything — games, proxies, or just chat. 🚀</div>
+    </div>
+
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask something..." onkeydown="if(event.key==='Enter') sendMessage()" />
+      <button class="chat-send" onclick="sendMessage()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="privacy-modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-title-icon" style="background: linear-gradient(135deg, #1a2e52, #7b2fff);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        Privacy Policy
+      </div>
+      <button class="modal-close" onclick="closePrivacy()">✕</button>
+    </div>
+    <div class="privacy-body">
+      <h2>Overview</h2>
+      <p>Eli's Unb10cked Hub is a personal site. We respect your privacy and are committed to being transparent about what we do and don't collect.</p>
+
+      <h2>Data We Collect</h2>
+      <p>We do not collect, store, or sell any personally identifiable information. No accounts, no sign-ups, no tracking cookies. Your browsing on this hub stays your business.</p>
+
+      <h2>AI Chat</h2>
+      <p>The AI chat feature sends your messages to the Groq API for a response. Messages are processed in real time and are not stored by this site. Please review Groq's privacy policy for information on how they handle data.</p>
+
+      <h2>Third-Party Links</h2>
+      <p>This site links to external sites (Eli's Unb10cked and Eli's Proxies). Once you leave this hub, their own privacy practices apply. We have no control over their content or data practices.</p>
+
+      <h2>Cookies</h2>
+      <p>This site does not use cookies or any local tracking technologies.</p>
+
+      <h2>Changes</h2>
+      <p>This policy may be updated at any time. Continued use of the site means you're cool with whatever's posted here.</p>
+      
+      <h2>Teachers</h2>
+      <p>Eli's Unblocked Hub is not meant to be used in class, it is meant to be used in study halls or your free time. Anyone using the site in class is not correctly using it and is going against doc policy. This is not meant to be a bypass, this is meant to be a site used in a students free time. Not to work around filters, simply just to have access when you should be. Any use of this site in class is NOT OUR RESPONSIBILITY! We prohibit in-class use, and anyone ignoring that is not at our fault.</p>
+
+      <h2>Contact</h2>
+      <p>Questions? Reach out through the usual channels. This is a personal project — no legal department, just vibes.</p>
+    </div>
+  </div>
+</div>
+
 <footer>Eli's Unb10cked Hub &nbsp;·&nbsp; Click any card to open</footer>
 
 <script>
+  /* ── Particles ── */
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
@@ -382,17 +742,13 @@
   function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
   resize();
   addEventListener('resize', resize);
-
   function rand(a, b) { return Math.random() * (b - a) + a; }
-
   function spawn() {
     return { x: rand(0,W), y: rand(0,H), r: rand(1,3), vx: rand(-0.3,0.3), vy: rand(-0.5,-0.08),
              color: COLORS[Math.floor(Math.random()*COLORS.length)], alpha: rand(0.15,0.65),
              life: rand(100,240), age: 0 };
   }
-
   for (let i = 0; i < 130; i++) particles.push(spawn());
-
   function draw() {
     ctx.clearRect(0,0,W,H);
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -422,6 +778,85 @@
     requestAnimationFrame(draw);
   }
   draw();
+
+  /* ── Modal helpers ── */
+  function openChat()    { document.getElementById('chatModal').classList.add('open'); document.getElementById('chatInput').focus(); }
+  function closeChat()   { document.getElementById('chatModal').classList.remove('open'); }
+  function openPrivacy() { document.getElementById('privacyModal').classList.add('open'); }
+  function closePrivacy(){ document.getElementById('privacyModal').classList.remove('open'); }
+
+  document.getElementById('chatModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeChat(); });
+  document.getElementById('privacyModal').addEventListener('click', e => { if (e.target === e.currentTarget) closePrivacy(); });
+
+  /* ── AI Chat ── */
+  // 🔑 REPLACE THIS with your actual Groq API key
+  const GROQ_API_KEY = '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';
+
+  const messages = [];
+
+  async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+
+    appendMsg(text, 'user');
+    messages.push({ role: 'user', content: text });
+
+    const typing = appendTyping();
+
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: "You are a helpful AI assistant on Eli's Unb10cked Hub — a cool site for unblocked games and proxies. Be friendly, concise, and a bit edgy. Keep answers short." },
+            ...messages
+          ],
+          max_tokens: 300
+        })
+      });
+
+      const data = await res.json();
+      typing.remove();
+
+      if (data.choices && data.choices[0]) {
+        const reply = data.choices[0].message.content;
+        messages.push({ role: 'assistant', content: reply });
+        appendMsg(reply, 'ai');
+      } else {
+        appendMsg('Hmm, got a weird response. Try again!', 'ai');
+      }
+    } catch (err) {
+      typing.remove();
+      appendMsg('Connection error — check your API key or try again later.', 'ai');
+    }
+  }
+
+  function appendMsg(text, who) {
+    const box = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `msg msg-${who}`;
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+    return div;
+  }
+
+  function appendTyping() {
+    const box = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg-typing';
+    div.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+    return div;
+  }
 </script>
 </body>
 </html>
