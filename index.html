@@ -720,9 +720,6 @@
 
       <h2>Changes</h2>
       <p>This policy may be updated at any time. Continued use of the site means you're cool with whatever's posted here.</p>
-      
-      <h2>Teachers</h2>
-      <p>Eli's Unblocked Hub is not meant to be used in class, it is meant to be used in study halls or your free time. Anyone using the site in class is not correctly using it and is going against doc policy. This is not meant to be a bypass, this is meant to be a site used in a students free time. Not to work around filters, simply just to have access when you should be. Any use of this site in class is NOT OUR RESPONSIBILITY! We prohibit in-class use, and anyone ignoring that is not at our fault.</p>
 
       <h2>Contact</h2>
       <p>Questions? Reach out through the usual channels. This is a personal project — no legal department, just vibes.</p>
@@ -790,7 +787,7 @@
 
   /* ── AI Chat ── */
   // 🔑 REPLACE THIS with your actual Groq API key
-  const GROQ_API_KEY = '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';
+  const GROQ_API_KEY = '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';
 
   const messages = [];
 
@@ -815,7 +812,35 @@
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
           messages: [
-            { role: 'system', content: "You are a helpful AI assistant on Eli's Unb10cked Hub — a cool site for unblocked games and proxies. Be friendly, concise, and a bit edgy. Keep answers short." },
+            { role: 'system', content: `You are Eli's AI assistant, embedded directly on Eli's Unb10cked Hub. Be friendly, concise, and a bit edgy. Keep answers short.
+
+Here is everything you know about this site:
+
+SITE: Eli's Unb10cked Hub
+URL: (this page — the hub/homepage)
+Description: A personal hub page linking to three sites.
+
+THE THREE CARDS ON THIS PAGE:
+1. Card 1 — "Eli's Unb10cked" (first card, left/top, cyan color)
+   URL: https://elisunb10cked.rinet.ai/index.html
+   Description: Unblocked games & sites. Status: LIVE.
+
+2. Card 2 — "Eli's Proxies" (second card, middle, purple color)
+   URL: http://elisproxiesispeak.rinet.ai/
+   Description: Proxy access & bypass tools. Status: LIVE.
+
+3. Card 3 — "Coming Soon" (third card, right/bottom, pink color)
+   URL: Not available yet.
+   Description: A new site coming soon. Status: NOT LIVE yet.
+
+RULES:
+- When someone asks to go to or open Eli's Unb10cked, always give the exact link: https://elisunb10cked.rinet.ai/index.html
+- When someone asks about the proxies site or Eli's Proxies, always give: http://elisproxiesispeak.rinet.ai/
+- When someone asks about the third site or coming soon card, tell them it's not live yet.
+- When someone asks about "the first card/panel/site", refer to Eli's Unb10cked with its link.
+- When someone asks about "the second card/panel/site", refer to Eli's Proxies with its link.
+- When someone asks about "the third card/panel/site", tell them it's coming soon and not live yet.
+- Always provide the actual URL when directing someone to a site.` },
             ...messages
           ],
           max_tokens: 300
